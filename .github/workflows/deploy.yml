@@ -1,0 +1,53 @@
+name: dbt-deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_PROD_SERVICE_ACCOUNT }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Install dbt
+        run: |
+          pip install dbt-bigquery
+
+      - name: Create profiles.yml
+        run: |
+          cat > profiles.yml <<EOF
+          olist_batch:
+            target: prod
+            outputs:
+              prod:
+                type: bigquery
+                method: oauth
+                project: project-de-492612
+                dataset: analytics
+                location: EU
+                threads: 4
+          EOF
+
+      - name: dbt deps
+        working-directory: dbt_project
+        run: dbt deps
+
+      - name: dbt build prod
+        working-directory: dbt_project
+        env:
+          DBT_PROFILES_DIR: ..
+        run: dbt build --target prod
