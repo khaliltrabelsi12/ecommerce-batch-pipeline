@@ -1,36 +1,55 @@
-name: test-auth
+name: dbt-ci
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
 
 jobs:
-  test:
+  dbt:
     runs-on: ubuntu-latest
 
     permissions:
       contents: read
       id-token: write
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    env:
+      DBT_PROFILES_DIR: .
 
-      - name: Authenticate to GCP
-        uses: google-github-actions/auth@v2
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
           service_account: ${{ secrets.GCP_CI_SERVICE_ACCOUNT }}
 
-      - name: Setup gcloud
-        uses: google-github-actions/setup-gcloud@v2
+      - uses: google-github-actions/setup-gcloud@v2
 
-      - name: Test gcloud
+      - name: Install dbt
         run: |
-          gcloud auth list
-          gcloud config list
+          pip install dbt-bigquery
 
-      - name: Test BigQuery
+      - name: Create profiles.yml
         run: |
-          bq ls
+          cat > profiles.yml <<EOF
+          olist_batch:
+            target: ci
+            outputs:
+              ci:
+                type: bigquery
+                method: oauth
+                project: project-de-492612
+                dataset: analytics_ci
+                location: EU
+                threads: 4
+          EOF
+
+      - name: dbt deps
+        run: dbt deps
+
+      - name: dbt build
+        run: dbt build --target ci
