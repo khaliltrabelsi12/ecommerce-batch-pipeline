@@ -16,9 +16,6 @@ jobs:
       contents: read
       id-token: write
 
-    env:
-      DBT_PROFILES_DIR: .
-
     steps:
       - uses: actions/checkout@v4
 
@@ -49,7 +46,11 @@ jobs:
           EOF
 
       - name: dbt deps
+        working-directory: dbt_project
         run: dbt deps
 
       - name: dbt build
+        working-directory: dbt_project
+        env:
+          DBT_PROFILES_DIR: ..
         run: dbt build --target ci
