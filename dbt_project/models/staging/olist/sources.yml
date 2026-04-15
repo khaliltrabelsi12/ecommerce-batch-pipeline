@@ -1,0 +1,101 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    description: "Raw Olist ecommerce tables loaded into BigQuery"
+
+    tables:
+      - name: orders
+        description: "Raw order header data"
+        columns:
+          - name: order_id
+            description: "Unique identifier of the order"
+            tests:
+              - not_null
+              - unique
+
+          - name: customer_id
+            description: "Customer identifier linked to the order"
+            tests:
+              - not_null
+
+          - name: order_status
+            description: "Current status of the order"
+
+      - name: order_items
+        description: "Raw order line items, one row per item in an order"
+        columns:
+          - name: order_id
+            description: "Order identifier"
+            tests:
+              - not_null
+
+          - name: order_item_id
+            description: "Sequential item number inside the order"
+            tests:
+              - not_null
+
+          - name: product_id
+            description: "Product identifier"
+            tests:
+              - not_null
+
+          - name: seller_id
+            description: "Seller identifier"
+            tests:
+              - not_null
+
+      - name: payments
+        description: "Raw payment data linked to orders"
+        columns:
+          - name: order_id
+            description: "Order identifier"
+            tests:
+              - not_null
+
+      - name: reviews
+        description: "Raw review data linked to orders"
+        columns:
+          - name: review_id
+            description: "Review identifier"
+            tests:
+              - not_null
+
+          - name: order_id
+            description: "Order identifier"
+            tests:
+              - not_null
+
+      - name: customers
+        description: "Raw customer data"
+        columns:
+          - name: customer_id
+            description: "Unique customer identifier"
+            tests:
+              - not_null
+              - unique
+
+      - name: products
+        description: "Raw product catalog data"
+        columns:
+          - name: product_id
+            description: "Unique product identifier"
+            tests:
+              - not_null
+              - unique
+
+      - name: sellers
+        description: "Raw seller data"
+        columns:
+          - name: seller_id
+            description: "Unique seller identifier"
+            tests:
+              - not_null
+              - unique
+
+      - name: geolocation
+        description: "Raw geolocation reference data"
+
+      - name: product_category_name_translation
+        description: "Translation of product category names"

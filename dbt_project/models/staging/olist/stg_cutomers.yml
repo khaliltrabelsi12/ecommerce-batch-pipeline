@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Cleaned staging model for Olist customers"
+
+    columns:
+      - name: customer_id
+        description: "Unique identifier of the customer record"
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_unique_id
+        description: "Business identifier that can link multiple customer records"
+
+      - name: customer_zip_code_prefix
+        description: "Customer zip code prefix"
+
+      - name: customer_city
+        description: "Customer city"
+
+      - name: customer_state
+        description: "Customer state"
+        tests:
+          - not_null

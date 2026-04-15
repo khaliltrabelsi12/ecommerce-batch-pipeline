@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: stg_orders
+    description: "Cleaned staging model for Olist orders"
+
+    columns:
+      - name: order_id
+        description: "Unique identifier of the order"
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: "Customer identifier linked to the order"
+        tests:
+          - not_null
+
+      - name: order_status
+        description: "Current status of the order"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['created', 'approved', 'invoiced', 'processing', 'shipped', 'delivered', 'unavailable', 'canceled']
+
+      - name: order_purchase_ts
+        description: "Timestamp when the order was placed"
+        tests:
+          - not_null
+
+      - name: order_approved_ts
+        description: "Timestamp when the order was approved"
+
+      - name: order_delivered_carrier_ts
+        description: "Timestamp when the order was handed to the carrier"
+
+      - name: order_delivered_customer_ts
+        description: "Timestamp when the order was delivered to the customer"
+
+      - name: order_estimated_delivery_ts
+        description: "Estimated delivery timestamp"

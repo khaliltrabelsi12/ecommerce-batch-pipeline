@@ -1,0 +1,98 @@
+version: 2
+
+models:
+  - name: fct_order_items
+    description: "Order-level fact table for ecommerce orders"
+
+    columns:
+      - name: order_id
+        description: "Unique order identifier"
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_id
+        description: "Customer identifier"
+        tests:
+          - not_null
+
+      - name: order_status
+        description: "Current status of the order"
+
+      - name: order_purchase_ts
+        description: "Timestamp when the order was placed"
+
+      - name: order_approved_ts
+        description: "Timestamp when the order was approved"
+
+      - name: order_delivered_carrier_ts
+        description: "Timestamp when the order was handed to the carrier"
+
+      - name: order_delivered_customer_ts
+        description: "Timestamp when the order was delivered to the customer"
+
+      - name: order_estimated_delivery_ts
+        description: "Estimated delivery timestamp"
+
+      - name: order_item_count
+        description: "Number of items in the order"
+        tests:
+          - not_null
+
+      - name: distinct_products_count
+        description: "Number of distinct products in the order"
+        tests:
+          - not_null
+
+      - name: distinct_sellers_count
+        description: "Number of distinct sellers in the order"
+        tests:
+          - not_null
+
+      - name: order_items_value
+        description: "Total value of item prices in the order"
+        tests:
+          - not_null
+
+      - name: order_freight_value
+        description: "Total freight value in the order"
+        tests:
+          - not_null
+
+      - name: order_total_value
+        description: "Total order value including items and freight"
+        tests:
+          - not_null
+
+      - name: payment_count
+        description: "Number of payment records for the order"
+        tests:
+          - not_null
+
+      - name: total_payment_value
+        description: "Total amount paid for the order"
+        tests:
+          - not_null
+
+      - name: max_payment_installments
+        description: "Maximum number of installments used in payments for the order"
+
+      - name: review_score
+        description: "Review score given for the order"
+
+      - name: days_to_approve
+        description: "Number of days between purchase and approval"
+
+      - name: days_to_deliver
+        description: "Number of days between purchase and customer delivery"
+
+      - name: delivery_delay_days
+        description: "Number of days between actual delivery date and estimated delivery date"
+
+      - name: order_is_delivered
+        description: "Whether the order was delivered"
+        tests:
+          - not_null
+
+      - name: order_is_late_delivery
+        description: "Whether the delivered order arrived after the estimated delivery date"

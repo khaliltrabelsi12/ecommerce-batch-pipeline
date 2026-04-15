@@ -1,0 +1,14 @@
+venv/
+data/
+venv_ai/
+venv_air/
+venv_airflow/
+venv_core/
+__pycache__/
+target/
+logs/
+.env
+*.pyc
+.DS_Store
+airflow/logs/
+airflow/standalone_admin_password.txt

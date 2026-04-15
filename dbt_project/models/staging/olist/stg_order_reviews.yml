@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: stg_order_reviews
+    description: "Cleaned staging model for Olist order reviews"
+
+    columns:
+      - name: review_id
+        description: "Review identifier"
+        tests:
+          - not_null
+
+      - name: order_id
+        description: "Order identifier"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: "{{ ref('stg_orders') }}"
+                field: order_id
+
+      - name: review_score
+        description: "Review score"
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5]
+                quote: false
+
+      - name: review_comment_title
+        description: "Review comment title"
+
+      - name: review_comment_message
+        description: "Review comment message"
+
+      - name: review_creation_ts
+        description: "Timestamp when the review was created"
+
+      - name: review_answer_ts
+        description: "Timestamp when the review was answered"

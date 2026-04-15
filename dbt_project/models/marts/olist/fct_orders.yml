@@ -1,0 +1,62 @@
+version: 2
+
+models:
+  - name: fct_orders
+    description: "Item-level fact table for ecommerce orders"
+
+    columns:
+      - name: order_id
+        description: "Order identifier"
+        tests:
+          - not_null
+
+      - name: order_item_id
+        description: "Line item identifier within an order"
+        tests:
+          - not_null
+
+      - name: product_id
+        description: "Product identifier"
+        tests:
+          - not_null
+
+      - name: seller_id
+        description: "Seller identifier"
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: "Customer identifier"
+        tests:
+          - not_null
+
+      - name: shipping_limit_ts
+        description: "Shipping deadline timestamp for the item"
+
+      - name: price
+        description: "Item price"
+        tests:
+          - not_null
+
+      - name: freight_value
+        description: "Freight value for the item"
+        tests:
+          - not_null
+
+      - name: item_total_value
+        description: "Total item value including freight"
+        tests:
+          - not_null
+
+      - name: quantity
+        description: "Quantity represented by the row, usually 1"
+        tests:
+          - not_null
+
+      - name: order_item_count
+        description: "Number of items in the order"
+        tests:
+          - not_null
+
+      - name: item_share_of_order_value
+        description: "Share of the item total value in the total order value"

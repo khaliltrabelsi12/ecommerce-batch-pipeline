@@ -1,0 +1,103 @@
+version: 2
+
+models:
+  - name: int_order_items_enriched
+    description: "Reusable item-level intermediate model enriched with customer_id and core item metrics"
+
+    columns:
+      - name: order_id
+        description: "Order identifier"
+        tests:
+          - not_null
+
+      - name: order_item_id
+        description: "Line item identifier within an order"
+        tests:
+          - not_null
+
+      - name: product_id
+        description: "Product identifier"
+        tests:
+          - not_null
+
+      - name: seller_id
+        description: "Seller identifier"
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: "Customer identifier inherited from the order"
+        tests:
+          - not_null
+
+      - name: item_total_value
+        description: "Price plus freight at item grain"
+        tests:
+          - not_null
+
+      - name: quantity
+        description: "Quantity represented by each row, always 1"
+        tests:
+          - not_null
+
+  - name: int_orders_items_agg
+    description: "Reusable order-level aggregation of item metrics"
+
+    columns:
+      - name: order_id
+        description: "Unique order identifier"
+        tests:
+          - not_null
+          - unique
+
+      - name: order_item_count
+        tests:
+          - not_null
+
+      - name: distinct_products_count
+        tests:
+          - not_null
+
+      - name: distinct_sellers_count
+        tests:
+          - not_null
+
+      - name: order_items_value
+        tests:
+          - not_null
+
+      - name: order_freight_value
+        tests:
+          - not_null
+
+      - name: order_total_value
+        tests:
+          - not_null
+
+  - name: int_orders_payments_agg
+    description: "Reusable order-level aggregation of payment metrics"
+
+    columns:
+      - name: order_id
+        description: "Unique order identifier"
+        tests:
+          - not_null
+          - unique
+
+      - name: payment_count
+        tests:
+          - not_null
+
+      - name: total_payment_value
+        tests:
+          - not_null
+
+  - name: int_orders_reviews_agg
+    description: "Reusable order-level aggregation of review metrics"
+
+    columns:
+      - name: order_id
+        description: "Unique order identifier"
+        tests:
+          - not_null
+          - unique

@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: stg_order_payments
+    description: "Cleaned staging model for Olist order payments"
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - order_id
+              - payment_sequential
+
+    columns:
+      - name: order_id
+        description: "Order identifier"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: "{{ ref('stg_orders') }}"
+                field: order_id
+
+      - name: payment_sequential
+        description: "Sequential number of the payment for an order"
+        tests:
+          - not_null
+
+      - name: payment_type
+        description: "Type of payment"
+        tests:
+          - not_null
+
+      - name: payment_installments
+        description: "Number of installments"
+
+      - name: payment_value
+        description: "Payment amount"
+        tests:
+          - not_null
